@@ -25,9 +25,15 @@ if(!$link){
 $selectMyth = mysql_query("SELECT * FROM MEMBER");
 while ($myth = mysql_fetch_array($selectMyth)){
     $crest_id = $myth["Crest_crest_id"];
+    $face_id = $myth["face_id"];
+    $selectMemberTier = mysql_query("SELECT * FROM MEMBER_HAS_TIER WHERE MEMBER_FACE_ID = $face_id");
+    $tier = mysql_fetch_array($selectMemberTier);
+    $tier = $tier["Tier_tier_id"];
+    $selectTier = mysql_query("SELECT * FROM TIER WHERE TIER_ID = $tier");
+    $tier = mysql_fetch_array($selectTier);
     $selectCrest = mysql_query("SELECT * FROM CREST WHERE CREST_ID = $crest_id");
     $crest = mysql_fetch_array($selectCrest);
-    var_dump($crest);
+
     
     
  echo '<div id="tabelas">';
@@ -46,8 +52,8 @@ while ($myth = mysql_fetch_array($selectMyth)){
  echo '</th>'; 
  #<!-- Espacinho -->
  #<!-- TIER -->
- echo '<th align="left" class="tiername"><span class="tierlevel">TierLevel</span>Tier: <strong> TierNome </strong></th>';
- echo '<th align="right" class="tiericon"> <div><img class="tier" title=" TierTitulo " src="imagemTier.png"></th>';
+ echo '<th align="left" class="tiername"><span class="tierlevel">',$tier["level"],'</span>Tier: <strong> ',$tier["nome"],' </strong></th>';
+ echo '<th align="right" class="tiericon"> <div><img class="tier" title="',$tier["titulo"],'" src="',$PATH,$tier["img"],'.png"></th>';
  echo '</tr>';
  echo '<tr>';
           #<!-- PROFILE PIC -->
