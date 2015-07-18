@@ -4,6 +4,7 @@
 }
   body{
       background-color: #113;
+      height: 2000px
   /*background-image: url(http://desktop.freewallpaper4.me/view/original/7212/marvel-vs-dc.jpg);*/  
   /*	background: -webkit-linear-gradient(left, red, orange, yellow, green, blue, indigo, violet); /* For Safari 5.1 to 6.0 */
   /*  background: -o-linear-gradient(left, red, orange, yellow, green, blue, indigo, violet); /* For Opera 11.1 to 12.0 */
@@ -342,4 +343,19 @@ background-color: #00F;
     left:0px;
     right:0px;
     bottom:0px
+}
+.sem_conexao{
+    position: fixed;
+    right: 25%;
+    left: 25%;
+    top: 35%;
+    color: #fff;
+    font-size: 45px;
+    text-align: center;
+    font-family: sans-serif;
+    border: solid #220875;
+    border-width: 5px;
+    border-radius: 10px;
+    background-color: #414f8f;
+    padding: 25px;
 }
