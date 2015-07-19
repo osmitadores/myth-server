@@ -120,18 +120,29 @@
                 echo '<td class="since" align="right"  colspan="3" >Mitando since  <strong class="mythano">',$myth["join_date"],'</strong></td>';
                 echo '</tr><tr>';
                 #<!-- BADGES -->
-                echo '<td class="badges" id="_',$myth["face_id"],'" colspan="4"> ';
+                echo '<td class="badges" id="_',$myth["face_id"],'" colspan="4">';
                 
                 $selectMemberBadge = puxar("SELECT * FROM $relMythBadge WHERE MEMBER_FACE_ID = $face_id");
-                $memberBadge = toArray($selectMemberBadge);
-                $badge_id = $memberBadge["Badge_badge_id"];
-                $selectBadge = puxar("SELECT * FROM $tabBadge WHERE BADGE_ID = $badge_id");
-                while($badge = toArray($selectBadge)){
-                    echo printImg($badge["img"], $badge["titulo"], "badgeicon");
+                while($memberBadge = toArray($selectMemberBadge)){
+                                    
+                    $badge_id = $memberBadge["Badge_badge_id"];
+                    $selectBadge = puxar("SELECT * FROM $tabBadge WHERE BADGE_ID = $badge_id");
+                    while($badge = toArray($selectBadge)){
+                        echo '<span> </span>';
+                        echo printImg($badge["img"], $badge["titulo"], "badgeicon");
+                    }
                 }
+                $selectMemberBadges = puxar("SELECT * FROM $relMythBadge WHERE MEMBER_FACE_ID = $face_id");
                 
+                $badgeObt = 0;
+                while($badgeLen = mysql_fetch_row($selectMemberBadges)){
+                    global $badgeObt;
+                    $badgeObt++;
+                }
                 echo '</td></tr>';
-                echo '<tr><td class="badges"><td class="badges"><td colspan="2" align="right" class="badges2">  <i>Badges Coletadas:</i> <b id="MitoID"></b> </td></tr>';
+                echo '<tr><td class="badges"><td class="badges"><td colspan="2" align="right" class="badges2">  <i>Badges Coletadas: '
+                        ,$badgeObt,' </i> <b id="_'
+                        ,$myth["face_id"],'_"></b> </td></tr>';
                 echo '</table></div><br>';
             }
         }
