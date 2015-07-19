@@ -10,6 +10,12 @@
         }
         echo '<img class="',$classe,'" src="',$path,$src,'.png" title="',$tit,'">';
     }
+    function puxar($sql_q){
+        return mysql_query($sql_q);
+    }
+    function toArray($query){
+        return mysql_fetch_array($query);
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -59,20 +65,26 @@
             mysql_query('SET character_set_connection=utf8');
             mysql_query('SET character_set_client=utf8');
             mysql_query('SET character_set_results=utf8');	
-
+            
+            $tabMyth = "member";
+            $tabTier = "tier";
+            $tabBadge = "badge";
+            $tabCrest = "crest";
+            $relMythTier = "member_has_tier";
+            $relMythBadge = "member_has_badge";
 
 #1489576273
-            $selectMyth = mysql_query("SELECT * FROM MEMBER");
-            while ($myth = mysql_fetch_array($selectMyth)) {
+            $selectMyth = puxar("SELECT * FROM $tabMyth");
+            while ($myth = toArray($selectMyth)) {
                 $crest_id = $myth["Crest_crest_id"];
                 $face_id = $myth["face_id"];
-                $selectMemberTier = mysql_query("SELECT * FROM MEMBER_HAS_TIER WHERE MEMBER_FACE_ID = $face_id");
-                $memberTier = mysql_fetch_array($selectMemberTier);
+                $selectMemberTier = puxar("SELECT * FROM $relMythTier WHERE MEMBER_FACE_ID = $face_id");
+                $memberTier = toArray($selectMemberTier);
                 $tier_id = $memberTier["Tier_tier_id"];
-                $selectTier = mysql_query("SELECT * FROM TIER WHERE TIER_ID = $tier_id");
-                $tier = mysql_fetch_array($selectTier);
-                $selectCrest = mysql_query("SELECT * FROM CREST WHERE CREST_ID = $crest_id");
-                $crest = mysql_fetch_array($selectCrest);
+                $selectTier = puxar("SELECT * FROM $tabTier WHERE TIER_ID = $tier_id");
+                $tier = toArray($selectTier);
+                $selectCrest = puxar("SELECT * FROM $tabCrest WHERE CREST_ID = $crest_id");
+                $crest = toArray($selectCrest);
 
 
 
@@ -105,10 +117,19 @@
                 echo '</td><tr><td HEIGHT="1px" colspan="2"></td></tr>';
                 echo '<td class="tg-e3zv"> Badges</td>';
                 echo '<td class="tg-031e"></td>';
-                echo '<td class="since" align="right"  colspan="3" >Mitando since  <strong class="mythano">Myth Ano</strong></td>';
+                echo '<td class="since" align="right"  colspan="3" >Mitando since  <strong class="mythano">',$myth["join_date"],'</strong></td>';
                 echo '</tr><tr>';
                 #<!-- BADGES -->
-                echo '<td class="badges" id="MythID" colspan="4">';
+                echo '<td class="badges" id="_',$myth["face_id"],'" colspan="4"> ';
+                
+                $selectMemberBadge = puxar("SELECT * FROM $relMythBadge WHERE MEMBER_FACE_ID = $face_id");
+                $memberBadge = toArray($selectMemberBadge);
+                $badge_id = $memberBadge["Badge_badge_id"];
+                $selectBadge = puxar("SELECT * FROM $tabBadge WHERE BADGE_ID = $badge_id");
+                while($badge = toArray($selectBadge)){
+                    echo printImg($badge["img"], $badge["titulo"], "badgeicon");
+                }
+                
                 echo '</td></tr>';
                 echo '<tr><td class="badges"><td class="badges"><td colspan="2" align="right" class="badges2">  <i>Badges Coletadas:</i> <b id="MitoID"></b> </td></tr>';
                 echo '</table></div><br>';
